@@ -1,3 +1,5 @@
+/* eslint no-undef: 0, no-unused-vars: 0 */
+
 class Game {
   constructor() {
     this.player = new Player(100, 250, './src/game/assets/car3.png');

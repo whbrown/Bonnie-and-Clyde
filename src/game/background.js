@@ -1,3 +1,5 @@
+/* eslint no-undef: 0 no-unused-vars: 0 */
+
 class Background {
   constructor() {
     this.roadXBasis = 0;
