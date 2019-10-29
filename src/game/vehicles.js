@@ -4,6 +4,8 @@ class Vehicle {
   constructor(x, y, imgPath) {
     this.x = x;
     this.y = y;
+    this.targetX = x;
+    this.targetY = y;
     this.imgPath = imgPath;
   }
 
@@ -21,9 +23,13 @@ class Vehicle {
     // TODO: make this min/max predicated of the style of vehicle
     let min = -3;
     let max = -0.5;
-    this.x += Math.floor(Math.random() * (max - min + 1) + min);
+    this.targetX += Math.floor(Math.random() * (max - min + 1) + min);
+    if (!isCollision(this, game.activeVehicles)) {
+      this.x = this.targetX;
+      this.y = this.targetY;
+    }
     image(this.img, this.x, this.y, this.img.width, this.img.height);
-    // this.hitBoxDebug();
+    this.hitBoxDebug();
   }
 
   // * Debug functions

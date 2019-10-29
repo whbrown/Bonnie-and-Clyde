@@ -1,24 +1,24 @@
 /* eslint no-undef: 0, no-unused-vars: 0, dot-notation: 0 */
 
-function isCollision(vehicle, targetVehicle) {
-  if (
-    vehicle.x + vehicle.img.width < targetVehicle.x ||
-    targetVehicle.x + vehicle.img.width < vehicle.x
-  ) {
-    return false;
-  }
-  if (
-    vehicle.y + (vehicle.img.height - 30) >
-      targetVehicle.y + targetVehicle.img.height ||
-    targetVehicle.y + (vehicle.img.height - 30) >
-      vehicle.y + targetVehicle.img.height
-  ) {
-    return false;
-  }
-  console.log(
-    `collision between ${vehicle.objectID} and ${targetVehicle.objectID}`
-  );
-  return true;
+function isCollision(subject, targets) {
+  return targets.some(object => {
+    if (subject.objectID === object.objectID) {
+      return false;
+    }
+    if (
+      subject.x + subject.img.width < object.x ||
+      object.x + subject.img.width < subject.x
+    ) {
+      return false;
+    }
+    if (
+      subject.y + (subject.img.height - 30) > object.y + object.img.height ||
+      object.y + (subject.img.height - 30) > subject.y + object.img.height
+    ) {
+      return false;
+    }
+    return true;
+  });
 }
 
 class Game {
@@ -55,9 +55,6 @@ class Game {
     clear();
     this.background.draw();
     this.activeVehicles.sort((a, b) => a.y - b.y);
-    if (frameCount < 60) {
-      console.log(frameCount);
-    }
     if (frameCount > 240 && frameCount % 200 === 0) {
       let randomIndex = Math.floor(
         Math.random() * Object.keys(carTypes).length
@@ -90,12 +87,12 @@ class Game {
       }
 
       // look for a way better than O(n**2) to check for collisions.
-      this.activeVehicles.forEach((targetVehicle, targetIndex) => {
-        if (subjectIndex !== targetIndex) {
-          if (isCollision(subjectVehicle, targetVehicle)) {
-          }
-        }
-      });
+      // this.activeVehicles.forEach((targetVehicle, targetIndex) => {
+      //   if (subjectIndex !== targetIndex) {
+      //     if (isCollision(subjectVehicle, targetVehicle)) {
+      //     }
+      //   }
+      // });
       subjectVehicle.draw();
     });
   }
