@@ -1,21 +1,35 @@
-/* eslint no-undef: 0, no-unused-vars: 0 */
+/* eslint no-undef: 0, no-unused-vars: 0, dot-notation: 0 */
+
+function isCollision(vehicle, targetVehicle) {
+  if (
+    vehicle.x + vehicle.img.width < targetVehicle.x ||
+    targetVehicle.x + vehicle.img.width < vehicle.x
+  ) {
+    return false;
+  }
+  if (
+    vehicle.y + (vehicle.img.height - 30) >
+      targetVehicle.y + targetVehicle.img.height ||
+    targetVehicle.y + (vehicle.img.height - 30) >
+      vehicle.y + targetVehicle.img.height
+  ) {
+    return false;
+  }
+  console.log(
+    `collision between ${vehicle.objectID} and ${targetVehicle.objectID}`
+  );
+  return true;
+}
 
 class Game {
   constructor() {
-    this.player = new Player(100, 250, './src/game/assets/car3.png');
     this.background = new Background();
-    this.civilian1 = new NPC(100, 400, './src/game/assets/car4.png');
-    this.civilian2 = new NPC(680, 200, './src/game/assets/car5.png');
-    this.civilianCarAssets = [
-      './src/game/assets/car4.png',
-      './src/game/assets/car5.png',
-      './src/game/assets/car6.png',
-      './src/game/assets/car7.png',
-      './src/game/assets/car8.png',
-    ];
-    this.ID = 1;
-    this.maxY = 400;
-    this.minY = 200;
+    this.player = new Player(100, 350, './src/game/assets/car3.png');
+    this.civilian1 = new Civilian(100, 400, carTypes['SUV'].imgPath);
+    this.civilian2 = new Civilian(680, 450, carTypes['Buick'].imgPath);
+    this.objectID = 1;
+    this.roadMaxY = 500;
+    this.roadMinY = 300;
   }
 
   preload() {
@@ -32,8 +46,8 @@ class Game {
     this.activeVehicles = [this.player, this.civilian1, this.civilian2];
     this.activeCivilians = [this.civilian1, this.civilian2];
     this.activeVehicles.forEach(vehicle => {
-      vehicle.ID = this.ID;
-      this.ID += 1;
+      vehicle.objectID = this.objectID;
+      this.objectID += 1;
     });
   }
 
@@ -41,37 +55,48 @@ class Game {
     clear();
     this.background.draw();
     this.activeVehicles.sort((a, b) => a.y - b.y);
-    // look for a way better than O(n**2) to check for collisions.
-    // this.activeVehicles.filter((vehicle) => {
-    //   for (let otherVehicle of this.activeVehicles)
-    // });
-    // console.log('game draw');
+    if (frameCount < 60) {
+      console.log(frameCount);
+    }
     if (frameCount > 240 && frameCount % 200 === 0) {
       let randomIndex = Math.floor(
-        Math.random() * this.civilianCarAssets.length
+        Math.random() * Object.keys(carTypes).length
       );
-      this.newVehicle = new NPC(
-        720,
-        Math.floor(Math.random() * (this.maxY - this.minY + 1) + this.minY),
-        this.civilianCarAssets[randomIndex]
+      this.newVehicle = new Civilian(
+        WIDTH,
+        Math.floor(
+          Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
+        ),
+        carTypes[Object.keys(carTypes)[randomIndex]].imgPath
       );
-      this.newVehicle.ID = this.ID;
-      if (this.newVehicle.ID === this.ID) {
-        // check ID to avoid re-initializing previously spawned new vehicles
+      this.newVehicle.objectID = this.objectID;
+      if (this.newVehicle.objectID === this.objectID) {
+        // checks objectID to avoid re-initializing previously spawned new vehicles
         this.newVehicle.preload();
-        // this.newVehicle.setup();
+        this.newVehicle.setup(); // ? this setup may have caused problems?
         this.activeVehicles.push(this.newVehicle);
         this.activeCivilians.push(this.newVehicle);
       }
-      this.ID += 1;
+      this.objectID += 1;
     }
-    this.activeVehicles.forEach((vehicle, index) => {
-      if (vehicle.x + vehicle.img.width < 0 && vehicle.ID !== 1) {
-        this.activeVehicles.splice(index, 1);
-        this.activeCivilians.splice(index, 1);
+    this.activeVehicles.forEach((subjectVehicle, subjectIndex) => {
+      // remove vehicles located off left side of the canvas
+      if (
+        subjectVehicle.x + subjectVehicle.img.width < 0 &&
+        subjectVehicle.objectID !== 1
+      ) {
+        this.activeVehicles.splice(subjectIndex, 1);
+        this.activeCivilians.splice(subjectIndex, 1);
       }
-      vehicle.draw();
+
+      // look for a way better than O(n**2) to check for collisions.
+      this.activeVehicles.forEach((targetVehicle, targetIndex) => {
+        if (subjectIndex !== targetIndex) {
+          if (isCollision(subjectVehicle, targetVehicle)) {
+          }
+        }
+      });
+      subjectVehicle.draw();
     });
-    // console.log(this.ID);
   }
 }

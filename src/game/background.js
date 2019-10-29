@@ -2,6 +2,7 @@
 
 class Background {
   constructor() {
+    // road is between y: 300 and y: 500;
     this.roadXBasis = 0;
   }
 

@@ -5,6 +5,7 @@ class Player extends Vehicle {
     super(x, y, imgPath);
     this.xMomentum = 0;
     this.yMomentum = 0;
+    this.health = 100;
   }
 
   moveUp() {
@@ -13,10 +14,8 @@ class Player extends Vehicle {
 
     if (this.yMomentum > -1) this.yMomentum -= 0.1;
 
-    // add randomness to keyDown movement
     this.y -= Math.floor(Math.random() * (max - min) + min);
 
-    // add randomness to movement by momentum
     this.y += Math.random() * 2 * this.yMomentum;
   }
 
@@ -49,7 +48,6 @@ class Player extends Vehicle {
     this.x -= Math.floor(Math.random() * (max - min) + min);
     this.x += Math.random() * this.xMomentum * max;
 
-    // y-axis volatility increases as xMomentum increases
     this.y +=
       Math.random() * (this.xMomentum + this.xMomentum * 0.1) -
       this.xMomentum * 0.1;
@@ -59,17 +57,16 @@ class Player extends Vehicle {
     if (this.y > 580) {
       // add rough terrain to foreground
 
-      let noise = (roughnessFactor, xMomentum) => {
+      let noise = (roughnessFactor, xMomentum) =>
         xMomentum < 0
           ? (Math.random() / xMomentum) * roughnessFactor
           : Math.random() * xMomentum * roughnessFactor;
-      };
 
       Math.floor(Math.random() + 0.5)
         ? (this.y += noise(3, this.xMomentum) + 1)
         : (this.y -= noise(3, this.xMomentum));
       Math.floor(Math.random() + 0.5)
-        ? (this.x += noise(3, this.xMomentum) + 1)
+        ? (this.x += noise(3, this.xMomentum) + 2)
         : (this.x -= noise(3, this.xMomentum));
     }
     if (this.y < 550 && this.y > 600) {
@@ -79,7 +76,7 @@ class Player extends Vehicle {
         ? (this.y += noise(1.5, this.xMomentum) + 1)
         : (this.y -= noise(1.5, this.xMomentum));
       Math.floor(Math.random() + 0.5)
-        ? (this.x += noise(1.5, this.xMomentum) + 1)
+        ? (this.x += noise(1.5, this.xMomentum) + 2)
         : (this.x -= noise(1.5, this.xMomentum));
     }
 
@@ -91,5 +88,6 @@ class Player extends Vehicle {
     this.x += Math.random() * 2 * this.xMomentum;
     this.y += Math.random() * 2 * this.yMomentum;
     image(this.img, this.x, this.y, this.img.width, this.img.height);
+    this.hitBoxDebug();
   }
 }
