@@ -24,9 +24,22 @@ class Vehicle {
     let min = -3;
     let max = -0.5;
     this.targetX += Math.floor(Math.random() * (max - min + 1) + min);
+
+    // TODO: refactor the code block below (down to image call) out into a seperate method so it can be used by vehicle subclasses with polymorphic draw methods (e.g. Player)
     if (!isCollision(this, game.activeVehicles)) {
       this.x = this.targetX;
       this.y = this.targetY;
+    }
+    // prevent target coords from getting too high after presistent collisions
+    if (this.targetX > this.x + 5) {
+      this.targetX = this.x + 5;
+    } else if (this.targetX < this.x - 5) {
+      this.targetX = this.x - 5;
+    }
+    if (this.targetY > this.y + 5) {
+      this.targetY = this.y + 5;
+    } else if (this.targetY < this.y - 5) {
+      this.targetY = this.y - 5;
     }
     image(this.img, this.x, this.y, this.img.width, this.img.height);
     this.hitBoxDebug();

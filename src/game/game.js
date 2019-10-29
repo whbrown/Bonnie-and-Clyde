@@ -1,19 +1,23 @@
 /* eslint no-undef: 0, no-unused-vars: 0, dot-notation: 0 */
 
 function isCollision(subject, targets) {
+  if (subject.targetY < 255) {
+    return true;
+  }
   return targets.some(object => {
     if (subject.objectID === object.objectID) {
       return false;
     }
     if (
-      subject.x + subject.img.width < object.x ||
-      object.x + subject.img.width < subject.x
+      subject.targetX + subject.img.width < object.x ||
+      object.x + subject.img.width < subject.targetX
     ) {
       return false;
     }
     if (
-      subject.y + (subject.img.height - 30) > object.y + object.img.height ||
-      object.y + (subject.img.height - 30) > subject.y + object.img.height
+      subject.targetY + (subject.img.height - 30) >
+        object.y + object.img.height ||
+      object.y + (subject.img.height - 30) > subject.targetY + object.img.height
     ) {
       return false;
     }

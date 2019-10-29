@@ -87,11 +87,24 @@ class Player extends Vehicle {
     // less control as momentum increases
     this.targetX += Math.random() * 2 * this.xMomentum;
     this.targetY += Math.random() * 2 * this.yMomentum;
+
     if (!isCollision(this, game.activeVehicles)) {
       this.x = this.targetX;
       this.y = this.targetY;
     }
-    // reset targetX & targetY in case of collision
+
+    // prevent target coords from getting too high after presistent collisions
+    if (this.targetX > this.x + 5) {
+      this.targetX = this.x + 5;
+    } else if (this.targetX < this.x - 5) {
+      this.targetX = this.x - 5;
+    }
+    if (this.targetY > this.y + 5) {
+      this.targetY = this.y + 5;
+    } else if (this.targetY < this.y - 5) {
+      this.targetY = this.y - 5;
+    }
+
     image(this.img, this.x, this.y, this.img.width, this.img.height);
     this.hitBoxDebug();
   }
