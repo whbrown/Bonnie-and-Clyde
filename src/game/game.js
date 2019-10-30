@@ -9,14 +9,14 @@ class Game {
     this.civilian1 = new Civilian(
       100,
       400,
-      carTypes['SUV'].imgPath,
-      carTypes['SUV']
+      civilianCarTypes['SUV'].imgPath,
+      civilianCarTypes['SUV']
     );
     this.civilian2 = new Civilian(
       680,
       450,
-      carTypes['Buick'].imgPath,
-      carTypes['Buick']
+      civilianCarTypes['Buick'].imgPath,
+      civilianCarTypes['Buick']
     );
     this.objectID = 1;
     this.roadMaxY = 500;
@@ -51,15 +51,16 @@ class Game {
     this.activeVehicles.sort((a, b) => a.y - b.y);
     if (frameCount > 240 && frameCount % 200 === 0) {
       let randomIndex = Math.floor(
-        Math.random() * Object.keys(carTypes).length
+        Math.random() * Object.keys(civilianCarTypes).length
       );
+      console.log(civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]]);
       this.newVehicle = new Civilian(
         GAMEWIDTH,
         Math.floor(
           Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
         ),
-        carTypes[Object.keys(carTypes)[randomIndex]].imgPath,
-        carTypes[Object.keys(carTypes)[randomIndex]]
+        civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]].imgPath,
+        civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]]
       );
       this.newVehicle.objectID = this.objectID;
       if (this.newVehicle.objectID === this.objectID) {
@@ -81,13 +82,6 @@ class Game {
         this.activeCivilians.splice(subjectIndex, 1);
       }
 
-      // look for a way better than O(n**2) to check for collisions.
-      // this.activeVehicles.forEach((targetVehicle, targetIndex) => {
-      //   if (subjectIndex !== targetIndex) {
-      //     if (isCollision(subjectVehicle, targetVehicle)) {
-      //     }
-      //   }
-      // });
       subjectVehicle.draw();
     });
     if (mouseIsPressed) {
@@ -108,6 +102,7 @@ class Game {
     fill('black');
     this.bullets.forEach((bullet, index) => {
       if (
+        // removes out of bounds bullets
         bullet.x > GAMEWIDTH + CANVASBUFFER ||
         bullet.x < GAMEXBASIS + CANVASBUFFER ||
         bullet.y < GAMEYBASIS + CANVASBUFFER ||
@@ -125,6 +120,7 @@ function isCollision(subject, targets) {
   if (subject.targetY < 255) {
     return true;
   }
+  // look for a way better than O(n**2) to check for collisions.
   return targets.some(object => {
     if (subject.objectID === object.objectID) {
       return false;

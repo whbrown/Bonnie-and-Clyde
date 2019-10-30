@@ -11,6 +11,8 @@ class Player extends Vehicle {
 
   updateAim(mx, my) {
     this.aimAngle = atan2(my - this.y, mx - this.x);
+
+    // convert from radians to degrees
     // this.aimAngle =
     //   ((this.aimAngle >= 0 ? this.aimAngle : 2 * Math.PI + this.aimAngle) *
     //     360) /

@@ -1,13 +1,12 @@
 /* eslint no-undef: 0, no-unused-vars: 0 */
 
 class Vehicle {
-  constructor(x, y, imgPath, carType) {
+  constructor(x, y, imgPath) {
     this.x = x;
     this.y = y;
     this.targetX = x;
     this.targetY = y;
     this.imgPath = imgPath;
-    this.carType = carType;
   }
 
   preload() {
@@ -72,7 +71,9 @@ class Vehicle {
 }
 
 class Civilian extends Vehicle {
-  constructor(x, y, carStylePath) {
-    super(x, y, carStylePath);
+  constructor(x, y, carStylePath, carType) {
+    super(x, y, carStylePath, carType);
+    this.carType = carType;
+    this.health = carType.health;
   }
 }
