@@ -12,8 +12,11 @@ class Vehicle {
 
   preload() {
     this.img = loadImage(this.imgPath);
-    this.wreck1 = loadImage('./src/game/assets/carwreck1.png');
-    // this.wrecks.forEach(wreck => loadImage(wreck));
+    // this.carWreck1 = loadImage('./src/game/assets/carwreck1.png');
+    // this.carWreck2 = loadImage('./src/game/assets/carwreck2.png');
+    // this.carWreck2 = loadImage('./src/game/assets/carwreck2.png');
+    // this.carWreckImgs = [this.carWreck1, this.carWreck2];
+    // this.wrecks.forEach(wreck => loadImage(wreck)); // ? p5 issues with iterative loading?
   }
 
   setup() {

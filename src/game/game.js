@@ -25,7 +25,10 @@ class Game {
 
   preload() {
     // TODO: move wreck loadimage to vehicles class
-    this.carwreck1 = loadImage('./src/game/assets/carwreck1.png');
+    this.carWreck1 = loadImage('./src/game/assets/carwreck1.png');
+    this.carWreck2 = loadImage('./src/game/assets/carwreck2.png');
+    this.carWreck3 = loadImage('./src/game/assets/carwreck3.png');
+    this.carWreckImgs = [this.carWreck1, this.carWreck2, this.carWreck3];
     this.background.preload();
     this.road.preload();
     // this.bullet.preload();
@@ -46,32 +49,41 @@ class Game {
     });
   }
 
+  spawnCivilian() {
+    let randomIndex = Math.floor(
+      Math.random() * Object.keys(civilianCarTypes).length
+    );
+    this.newVehicle = new Civilian(
+      GAMEWIDTH,
+      Math.floor(
+        Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
+      ),
+      civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]].imgPath,
+      civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]]
+    );
+    this.newVehicle.objectID = this.objectID;
+    if (this.newVehicle.objectID === this.objectID) {
+      // checks objectID to avoid re-initializing previously spawned new vehicles
+      this.newVehicle.preload();
+      this.newVehicle.setup(); // ? this setup may have caused problems?
+      this.activeVehicles.push(this.newVehicle);
+      this.activeCivilians.push(this.newVehicle);
+    }
+    this.objectID += 1;
+  }
+
   draw() {
     clear();
     this.background.draw();
     this.road.draw();
     this.activeVehicles.sort((a, b) => a.y - b.y);
-    if (frameCount > 240 && frameCount % 200 === 0) {
-      let randomIndex = Math.floor(
-        Math.random() * Object.keys(civilianCarTypes).length
-      );
-      this.newVehicle = new Civilian(
-        GAMEWIDTH,
-        Math.floor(
-          Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
-        ),
-        civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]].imgPath,
-        civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]]
-      );
-      this.newVehicle.objectID = this.objectID;
-      if (this.newVehicle.objectID === this.objectID) {
-        // checks objectID to avoid re-initializing previously spawned new vehicles
-        this.newVehicle.preload();
-        this.newVehicle.setup(); // ? this setup may have caused problems?
-        this.activeVehicles.push(this.newVehicle);
-        this.activeCivilians.push(this.newVehicle);
-      }
-      this.objectID += 1;
+    if (frameCount > 180 && frameCount < 1200 && frameCount % 200 === 0) {
+      // every 3.3 seconds
+      this.spawnCivilian();
+    }
+    if (frameCount > 1200 && frameCount % 120 === 0) {
+      // every 2 seconds
+      this.spawnCivilian();
     }
     this.activeVehicles.forEach((subjectVehicle, subjectIndex) => {
       // remove vehicles located off left side of the canvas
@@ -83,12 +95,12 @@ class Game {
         this.activeCivilians.splice(subjectIndex, 1);
       }
       if (subjectVehicle.health <= 0) {
-        subjectVehicle.img = this.carwreck1;
+        subjectVehicle.img = this.carWreckImgs[subjectVehicle.carType.wreckNum];
         subjectVehicle.wrecked = true;
       }
       subjectVehicle.draw();
     });
-    if (mouseIsPressed) {
+    if (mouseIsPressed && !this.player.wrecked) {
       if (frameCount % 10 === 0) {
         this.player.updateAim(mouseX, mouseY);
         let newBullet = new Bullet(

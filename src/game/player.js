@@ -5,8 +5,13 @@ class Player extends Vehicle {
     super(x, y, imgPath);
     this.xMomentum = 0;
     this.yMomentum = 0;
-    this.health = 100;
+    this.health = 150;
     this.aimAngle = 0;
+    // TODO: increment murderCount whenever player kills civilian/cop
+    this.murderCount = 0;
+    this.carType = {
+      wreckNum: 1,
+    };
   }
 
   updateAim(mx, my) {
@@ -65,8 +70,9 @@ class Player extends Vehicle {
   }
 
   draw() {
-    if (this.y > 580) {
+    if (this.y > 580 && !this.wrecked) {
       // adds rough terrain to foreground
+      this.health -= 0.5;
       let noise = (roughnessFactor, xMomentum) =>
         xMomentum < 0
           ? (Math.random() / xMomentum) * roughnessFactor
@@ -79,8 +85,9 @@ class Player extends Vehicle {
         ? (this.targetX += noise(3, this.xMomentum) + 2)
         : (this.targetX -= noise(3, this.xMomentum));
     }
-    if (this.targetY < 550 && this.targetY > 600) {
+    if (this.targetY < 550 && this.targetY > 600 && !this.wrecked) {
       // less roughness near edge of the road
+      this.health -= 0.25;
 
       Math.floor(Math.random() + 0.5)
         ? (this.targetY += noise(1.5, this.xMomentum) + 1)
