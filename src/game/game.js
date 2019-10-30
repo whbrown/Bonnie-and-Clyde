@@ -27,6 +27,7 @@ function isCollision(subject, targets) {
 
 class Game {
   constructor() {
+    this.road = new Road();
     this.background = new Background();
     this.player = new Player(100, 350, './src/game/assets/car3.png');
     this.civilian1 = new Civilian(100, 400, carTypes['SUV'].imgPath);
@@ -38,6 +39,7 @@ class Game {
 
   preload() {
     this.background.preload();
+    this.road.preload();
     this.player.preload();
     this.civilian1.preload();
     this.civilian2.preload();
@@ -58,6 +60,7 @@ class Game {
   draw() {
     clear();
     this.background.draw();
+    this.road.draw();
     this.activeVehicles.sort((a, b) => a.y - b.y);
     if (frameCount > 240 && frameCount % 200 === 0) {
       let randomIndex = Math.floor(

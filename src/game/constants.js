@@ -1,5 +1,6 @@
 const WIDTH = 720;
 const HEIGHT = 720;
+GAMEXBASIS = 100;
 
 const carTypes = {
   SUV: {
