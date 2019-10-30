@@ -24,6 +24,7 @@ class Game {
   }
 
   preload() {
+    this.carwreck1 = loadImage('./src/game/assets/carwreck1.png');
     this.background.preload();
     this.road.preload();
     // this.bullet.preload();
@@ -53,7 +54,6 @@ class Game {
       let randomIndex = Math.floor(
         Math.random() * Object.keys(civilianCarTypes).length
       );
-      console.log(civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]]);
       this.newVehicle = new Civilian(
         GAMEWIDTH,
         Math.floor(
@@ -81,20 +81,25 @@ class Game {
         this.activeVehicles.splice(subjectIndex, 1);
         this.activeCivilians.splice(subjectIndex, 1);
       }
-
+      if (frameCount > 250) {
+        if (subjectVehicle.health <= 0) {
+          subjectVehicle.img = this.carwreck1;
+          subjectVehicle.speedBonus += 5;
+        }
+      }
       subjectVehicle.draw();
     });
     if (mouseIsPressed) {
       if (frameCount % 10 === 0) {
         this.player.updateAim(mouseX, mouseY);
-        this.bullets.push(
-          new Bullet(
-            this.player.x + this.player.img.width / 2,
-            this.player.y + this.player.img.height / 2,
-            this.player.aimAngle,
-            1
-          )
+        let newBullet = new Bullet(
+          this.player.x + this.player.img.width / 2,
+          this.player.y + this.player.img.height / 2,
+          this.player.aimAngle,
+          1
         );
+        newBullet.preload();
+        this.bullets.push(newBullet);
       }
     }
 
@@ -116,28 +121,46 @@ class Game {
   }
 }
 
-function isCollision(subject, targets) {
-  if (subject.targetY < 255) {
-    return true;
-  }
+// function isCollision(subject, targets) {
+//   // look for a way better than O(n**2) to check for collisions.
+//   return targets.some(object => {
+//     if (subject.objectID === object.objectID) {
+//       return false;
+//     }
+//     if (
+//       subject.targetX + subject.img.width < object.x ||
+//       object.x + subject.img.width < subject.targetX
+//     ) {
+//       return false;
+//     }
+//     if (
+//       subject.targetY + (subject.img.height - 30) >
+//         object.y + object.img.height ||
+//       object.y + (subject.img.height - 30) > subject.targetY + object.img.height
+//     ) {
+//       return false;
+//     }
+//     return true;
+//   });
+// }
+
+function isCollision(subject, object) {
   // look for a way better than O(n**2) to check for collisions.
-  return targets.some(object => {
-    if (subject.objectID === object.objectID) {
-      return false;
-    }
-    if (
-      subject.targetX + subject.img.width < object.x ||
-      object.x + subject.img.width < subject.targetX
-    ) {
-      return false;
-    }
-    if (
-      subject.targetY + (subject.img.height - 30) >
-        object.y + object.img.height ||
-      object.y + (subject.img.height - 30) > subject.targetY + object.img.height
-    ) {
-      return false;
-    }
-    return true;
-  });
+  if (subject.objectID === object.objectID) {
+    return false;
+  }
+  if (
+    subject.targetX + subject.img.width < object.x ||
+    object.x + subject.img.width < subject.targetX
+  ) {
+    return false;
+  }
+  if (
+    subject.targetY + (subject.img.height - 30) >
+      object.y + object.img.height ||
+    object.y + (subject.img.height - 30) > subject.targetY + object.img.height
+  ) {
+    return false;
+  }
+  return true;
 }

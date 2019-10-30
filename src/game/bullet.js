@@ -1,9 +1,13 @@
+/* eslint no-undef: 0, */
+
 class Bullet {
   constructor(x, y, angle, shooterID) {
     this.x = x;
+    this.targetX = x;
     this.y = y;
-    this.shooterID = shooterID;
-    this.imgPath = './src/game/assets/bullet.png';
+    this.targetY = y;
+    this.objectID = shooterID;
+    this.imgPath = './src/game/assets/bullet-small.png';
 
     // angle comes in radians calculated using atan2
     this.angle = angle;
@@ -11,15 +15,34 @@ class Bullet {
   }
 
   preload() {
-    console.log('preloading bullet');
-    // bulletImg = loadImage('./src/game/assets/bullet.png');
+    this.img = loadImage('./src/game/assets/bullet-small.png');
   }
 
   draw() {
-    this.x += this.speed * Math.cos(this.angle);
-    this.y += this.speed * Math.sin(this.angle);
+    this.targetX += this.speed * Math.cos(this.angle);
+    this.targetY += this.speed * Math.sin(this.angle);
 
-    circle(this.x, this.y, 5);
-    // image(bulletImg, this.x, this.y, bulletImg.width, bulletImg.height);
+    // TODO: loop over activeVehicles: if !collision, then:
+    let collision = false;
+
+    if (!collision) {
+      // TODO: store this filtered array, and immediately iterate over it, decrementing vehicle.health.
+
+      game.activeVehicles.find(vehicle => {
+        if (isCollision(this, vehicle)) {
+          return (vehicle.health -= 50);
+        }
+        return false;
+      });
+    }
+    if (!collision) {
+      this.x = this.targetX;
+      this.y = this.targetY;
+    }
+
+    this.x = this.targetX;
+    this.y = this.targetY;
+    // circle(this.x, this.y, 5);
+    image(this.img, this.x, this.y, img.width / 3, img.height / 3);
   }
 }

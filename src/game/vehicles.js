@@ -7,10 +7,13 @@ class Vehicle {
     this.targetX = x;
     this.targetY = y;
     this.imgPath = imgPath;
+    this.speedBonus = 0;
   }
 
   preload() {
     this.img = loadImage(this.imgPath);
+    this.wreck1 = loadImage('./src/game/assets/carwreck1.png');
+    // this.wrecks.forEach(wreck => loadImage(wreck));
   }
 
   setup() {
@@ -26,7 +29,20 @@ class Vehicle {
     this.targetX += Math.floor(Math.random() * (max - min + 1) + min);
 
     // TODO: refactor the code block below (down to image call) out into a seperate method so it can be used by vehicle subclasses with polymorphic draw methods (e.g. Player)
-    if (!isCollision(this, game.activeVehicles)) {
+    let collision = false;
+
+    if (this.targetY < 255) {
+      // if vehicle is colliding with the road barrier
+      collision = true;
+    }
+
+    if (!collision) {
+      // TODO: store this filtered array, and immediately iterate over it, decrementing vehicle.health.
+      collision = game.activeVehicles.filter(vehicle =>
+        isCollision(this, vehicle)
+      ).length;
+    }
+    if (!collision) {
       this.x = this.targetX;
       this.y = this.targetY;
     }
@@ -42,8 +58,9 @@ class Vehicle {
     } else if (this.targetY < this.y - maxTargetDiff) {
       this.targetY = this.y - maxTargetDiff;
     }
+    this.x -= this.speedBonus;
     image(this.img, this.x, this.y, this.img.width, this.img.height);
-    this.hitBoxDebug();
+    // this.hitBoxDebug();
   }
 
   // * Debug functions

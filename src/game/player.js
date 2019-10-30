@@ -99,7 +99,21 @@ class Player extends Vehicle {
     this.targetX += Math.random() * 2 * this.xMomentum;
     this.targetY += Math.random() * 2 * this.yMomentum;
 
-    if (!isCollision(this, game.activeVehicles)) {
+    let collision = false;
+
+    if (this.targetY < 255) {
+      // if vehicle is colliding with the road barrier
+      collision = true;
+    }
+
+    if (!collision) {
+      // TODO: store this filtered array, and immediately iterate over it, decrementing vehicle.health.
+      collision = game.activeVehicles.filter(vehicle =>
+        isCollision(this, vehicle)
+      ).length;
+    }
+
+    if (!collision) {
       this.x = this.targetX;
       this.y = this.targetY;
     }
@@ -125,6 +139,6 @@ class Player extends Vehicle {
     }
 
     image(this.img, this.x, this.y, this.img.width, this.img.height);
-    this.hitBoxDebug();
+    // this.hitBoxDebug();
   }
 }
