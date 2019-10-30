@@ -5,6 +5,7 @@ const GAMEHEIGHT = 720;
 const GAMEXBASIS = 0;
 const GAMEYBASIS = 0;
 const CANVASBUFFER = 10;
+const carSpeed = 7;
 
 function cotan(x) {
   return 1 / Math.tan(x);

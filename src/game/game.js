@@ -24,6 +24,7 @@ class Game {
   }
 
   preload() {
+    // TODO: move wreck loadimage to vehicles class
     this.carwreck1 = loadImage('./src/game/assets/carwreck1.png');
     this.background.preload();
     this.road.preload();
@@ -81,11 +82,9 @@ class Game {
         this.activeVehicles.splice(subjectIndex, 1);
         this.activeCivilians.splice(subjectIndex, 1);
       }
-      if (frameCount > 250) {
-        if (subjectVehicle.health <= 0) {
-          subjectVehicle.img = this.carwreck1;
-          subjectVehicle.speedBonus += 5;
-        }
+      if (subjectVehicle.health <= 0) {
+        subjectVehicle.img = this.carwreck1;
+        subjectVehicle.wrecked = true;
       }
       subjectVehicle.draw();
     });

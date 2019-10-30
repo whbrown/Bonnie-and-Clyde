@@ -7,7 +7,7 @@ class Vehicle {
     this.targetX = x;
     this.targetY = y;
     this.imgPath = imgPath;
-    this.speedBonus = 0;
+    this.wrecked = false;
   }
 
   preload() {
@@ -23,10 +23,15 @@ class Vehicle {
   }
 
   draw() {
-    // TODO: make this min/max predicated of the style of vehicle
+    // TODO: make this min/max predicated of the type of vehicle
     let min = -3;
     let max = -0.5;
-    this.targetX += Math.floor(Math.random() * (max - min + 1) + min);
+    if (!this.wrecked) {
+      this.targetX += Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    if (this.wrecked) {
+      this.targetX += -7;
+    }
 
     // TODO: refactor the code block below (down to image call) out into a seperate method so it can be used by vehicle subclasses with polymorphic draw methods (e.g. Player)
     let collision = false;
@@ -37,14 +42,16 @@ class Vehicle {
     }
 
     if (!collision) {
-      // TODO: store this filtered array, and immediately iterate over it, decrementing vehicle.health.
       collision = game.activeVehicles.filter(vehicle =>
         isCollision(this, vehicle)
       ).length;
     }
-    if (!collision) {
+    if (!collision || this.wrecked) {
       this.x = this.targetX;
       this.y = this.targetY;
+    } else {
+      this.health -= 10;
+      this.x -= carSpeed;
     }
     // prevent target coords from getting too high after presistent collisions
     const maxTargetDiff = 20;
@@ -58,7 +65,6 @@ class Vehicle {
     } else if (this.targetY < this.y - maxTargetDiff) {
       this.targetY = this.y - maxTargetDiff;
     }
-    this.x -= this.speedBonus;
     image(this.img, this.x, this.y, this.img.width, this.img.height);
     // this.hitBoxDebug();
   }

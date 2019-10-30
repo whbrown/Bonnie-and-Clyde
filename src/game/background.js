@@ -4,6 +4,7 @@ class Road {
   constructor() {
     // road is between y: 300 and y: 500;
     this.roadXBasis = 0;
+    this.roadSpeed = 7;
   }
 
   preload() {
@@ -13,7 +14,7 @@ class Road {
   }
 
   draw() {
-    this.roadXBasis -= 7;
+    this.roadXBasis -= carSpeed;
     image(this.road, this.roadXBasis, 260, this.roadWidth, 460);
     image(
       this.road,

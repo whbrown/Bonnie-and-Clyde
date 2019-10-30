@@ -16,17 +16,19 @@ function setup() {
 
 function draw() {
   // * player controls
-  if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-    game.player.accelerate();
-  }
-  if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-    game.player.brake();
-  }
-  if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
-    game.player.moveUp();
-  }
-  if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
-    game.player.moveDown();
+  if (!game.player.wrecked) {
+    if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+      game.player.accelerate();
+    }
+    if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+      game.player.brake();
+    }
+    if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
+      game.player.moveUp();
+    }
+    if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+      game.player.moveDown();
+    }
   }
 
   game.draw();

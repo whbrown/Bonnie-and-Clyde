@@ -66,8 +66,7 @@ class Player extends Vehicle {
 
   draw() {
     if (this.y > 580) {
-      // add rough terrain to foreground
-
+      // adds rough terrain to foreground
       let noise = (roughnessFactor, xMomentum) =>
         xMomentum < 0
           ? (Math.random() / xMomentum) * roughnessFactor
@@ -98,7 +97,6 @@ class Player extends Vehicle {
     // less control as momentum increases
     this.targetX += Math.random() * 2 * this.xMomentum;
     this.targetY += Math.random() * 2 * this.yMomentum;
-
     let collision = false;
 
     if (this.targetY < 255) {
@@ -107,15 +105,18 @@ class Player extends Vehicle {
     }
 
     if (!collision) {
-      // TODO: store this filtered array, and immediately iterate over it, decrementing vehicle.health.
       collision = game.activeVehicles.filter(vehicle =>
         isCollision(this, vehicle)
       ).length;
     }
 
     if (!collision) {
+      this.targetX;
       this.x = this.targetX;
       this.y = this.targetY;
+    } else {
+      this.health -= 10;
+      this.x -= carSpeed;
     }
     // TODO: simple imitation of newton's 3rd law
     // else {
@@ -125,8 +126,8 @@ class Player extends Vehicle {
     //     this.y > this.targetY ? this.y - this.targetY : this.targetY - this.y;
     // }
 
-    // prevent target coords from getting too high after presistent collisions
     const maxTargetDiff = 20;
+    // prevents target coords from becoming too divergent from actual coords after presistent collisions which causes clipping
     if (this.targetX > this.x + maxTargetDiff) {
       this.targetX = this.x + maxTargetDiff;
     } else if (this.targetX < this.x - maxTargetDiff) {
@@ -136,6 +137,14 @@ class Player extends Vehicle {
       this.targetY = this.y + maxTargetDiff;
     } else if (this.targetY < this.y - maxTargetDiff) {
       this.targetY = this.y - maxTargetDiff;
+    }
+
+    if (this.wrecked) {
+      this.x -= carSpeed;
+      this.xMomentum = 0;
+      this.yMomentum = 0;
+      this.targetX = this.x;
+      this.targetY = this.y;
     }
 
     image(this.img, this.x, this.y, this.img.width, this.img.height);
