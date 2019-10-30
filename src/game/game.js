@@ -1,39 +1,23 @@
 /* eslint no-undef: 0, no-unused-vars: 0, dot-notation: 0 */
 
-function isCollision(subject, targets) {
-  if (subject.targetY < 255) {
-    return true;
-  }
-  return targets.some(object => {
-    if (subject.objectID === object.objectID) {
-      return false;
-    }
-    if (
-      subject.targetX + subject.img.width < object.x ||
-      object.x + subject.img.width < subject.targetX
-    ) {
-      return false;
-    }
-    if (
-      subject.targetY + (subject.img.height - 30) >
-        object.y + object.img.height ||
-      object.y + (subject.img.height - 30) > subject.targetY + object.img.height
-    ) {
-      return false;
-    }
-    return true;
-  });
-}
-
 class Game {
   constructor() {
     this.road = new Road();
     this.background = new Background();
-    // this.bullet = new Bullet();
     this.bullets = [];
     this.player = new Player(100, 350, './src/game/assets/car3.png');
-    this.civilian1 = new Civilian(100, 400, carTypes['SUV'].imgPath);
-    this.civilian2 = new Civilian(680, 450, carTypes['Buick'].imgPath);
+    this.civilian1 = new Civilian(
+      100,
+      400,
+      carTypes['SUV'].imgPath,
+      carTypes['SUV']
+    );
+    this.civilian2 = new Civilian(
+      680,
+      450,
+      carTypes['Buick'].imgPath,
+      carTypes['Buick']
+    );
     this.objectID = 1;
     this.roadMaxY = 500;
     this.roadMinY = 300;
@@ -74,7 +58,8 @@ class Game {
         Math.floor(
           Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
         ),
-        carTypes[Object.keys(carTypes)[randomIndex]].imgPath
+        carTypes[Object.keys(carTypes)[randomIndex]].imgPath,
+        carTypes[Object.keys(carTypes)[randomIndex]]
       );
       this.newVehicle.objectID = this.objectID;
       if (this.newVehicle.objectID === this.objectID) {
@@ -134,4 +119,29 @@ class Game {
     });
     pop();
   }
+}
+
+function isCollision(subject, targets) {
+  if (subject.targetY < 255) {
+    return true;
+  }
+  return targets.some(object => {
+    if (subject.objectID === object.objectID) {
+      return false;
+    }
+    if (
+      subject.targetX + subject.img.width < object.x ||
+      object.x + subject.img.width < subject.targetX
+    ) {
+      return false;
+    }
+    if (
+      subject.targetY + (subject.img.height - 30) >
+        object.y + object.img.height ||
+      object.y + (subject.img.height - 30) > subject.targetY + object.img.height
+    ) {
+      return false;
+    }
+    return true;
+  });
 }

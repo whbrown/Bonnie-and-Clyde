@@ -1,12 +1,13 @@
 /* eslint no-undef: 0, no-unused-vars: 0 */
 
 class Vehicle {
-  constructor(x, y, imgPath) {
+  constructor(x, y, imgPath, carType) {
     this.x = x;
     this.y = y;
     this.targetX = x;
     this.targetY = y;
     this.imgPath = imgPath;
+    this.carType = carType;
   }
 
   preload() {
