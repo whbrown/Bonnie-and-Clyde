@@ -31,15 +31,16 @@ class Vehicle {
       this.y = this.targetY;
     }
     // prevent target coords from getting too high after presistent collisions
-    if (this.targetX > this.x + 5) {
-      this.targetX = this.x + 5;
-    } else if (this.targetX < this.x - 5) {
-      this.targetX = this.x - 5;
+    const maxTargetDiff = 20;
+    if (this.targetX > this.x + maxTargetDiff) {
+      this.targetX = this.x + maxTargetDiff;
+    } else if (this.targetX < this.x - maxTargetDiff) {
+      this.targetX = this.x - maxTargetDiff;
     }
-    if (this.targetY > this.y + 5) {
-      this.targetY = this.y + 5;
-    } else if (this.targetY < this.y - 5) {
-      this.targetY = this.y - 5;
+    if (this.targetY > this.y + maxTargetDiff) {
+      this.targetY = this.y + maxTargetDiff;
+    } else if (this.targetY < this.y - maxTargetDiff) {
+      this.targetY = this.y - maxTargetDiff;
     }
     image(this.img, this.x, this.y, this.img.width, this.img.height);
     this.hitBoxDebug();

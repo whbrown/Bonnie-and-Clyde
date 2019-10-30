@@ -1,6 +1,14 @@
-const WIDTH = 720;
-const HEIGHT = 720;
-GAMEXBASIS = 100;
+console.log(window);
+
+const GAMEWIDTH = 1020;
+const GAMEHEIGHT = 720;
+const GAMEXBASIS = 0;
+const GAMEYBASIS = 0;
+const CANVASBUFFER = 10;
+
+function cotan(x) {
+  return 1 / Math.tan(x);
+}
 
 const carTypes = {
   SUV: {

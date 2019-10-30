@@ -29,6 +29,8 @@ class Game {
   constructor() {
     this.road = new Road();
     this.background = new Background();
+    // this.bullet = new Bullet();
+    this.bullets = [];
     this.player = new Player(100, 350, './src/game/assets/car3.png');
     this.civilian1 = new Civilian(100, 400, carTypes['SUV'].imgPath);
     this.civilian2 = new Civilian(680, 450, carTypes['Buick'].imgPath);
@@ -40,6 +42,7 @@ class Game {
   preload() {
     this.background.preload();
     this.road.preload();
+    // this.bullet.preload();
     this.player.preload();
     this.civilian1.preload();
     this.civilian2.preload();
@@ -67,7 +70,7 @@ class Game {
         Math.random() * Object.keys(carTypes).length
       );
       this.newVehicle = new Civilian(
-        WIDTH,
+        GAMEWIDTH,
         Math.floor(
           Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
         ),
@@ -102,5 +105,33 @@ class Game {
       // });
       subjectVehicle.draw();
     });
+    if (mouseIsPressed) {
+      if (frameCount % 10 === 0) {
+        this.player.updateAim(mouseX, mouseY);
+        this.bullets.push(
+          new Bullet(
+            this.player.x + this.player.img.width / 2,
+            this.player.y + this.player.img.height / 2,
+            this.player.aimAngle,
+            1
+          )
+        );
+      }
+    }
+
+    push();
+    fill('black');
+    this.bullets.forEach((bullet, index) => {
+      if (
+        bullet.x > GAMEWIDTH + CANVASBUFFER ||
+        bullet.x < GAMEXBASIS + CANVASBUFFER ||
+        bullet.y < GAMEYBASIS + CANVASBUFFER ||
+        bullet.y > GAMEHEIGHT + CANVASBUFFER
+      ) {
+        this.bullets.splice(index, 1);
+      }
+      bullet.draw();
+    });
+    pop();
   }
 }

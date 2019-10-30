@@ -6,6 +6,15 @@ class Player extends Vehicle {
     this.xMomentum = 0;
     this.yMomentum = 0;
     this.health = 100;
+    this.aimAngle = 0;
+  }
+
+  updateAim(mx, my) {
+    this.aimAngle = atan2(my - this.y, mx - this.x);
+    // this.aimAngle =
+    //   ((this.aimAngle >= 0 ? this.aimAngle : 2 * Math.PI + this.aimAngle) *
+    //     360) /
+    //   (2 * Math.PI);
   }
 
   moveUp() {
@@ -92,9 +101,16 @@ class Player extends Vehicle {
       this.x = this.targetX;
       this.y = this.targetY;
     }
+    // TODO: simple imitation of newton's 3rd law
+    // else {
+    //   let xDiff =
+    //     this.x > this.targetX ? this.x - this.targetX : this.targetX - this.x;
+    //   let yDiff =
+    //     this.y > this.targetY ? this.y - this.targetY : this.targetY - this.y;
+    // }
 
     // prevent target coords from getting too high after presistent collisions
-    const maxTargetDiff = 10;
+    const maxTargetDiff = 20;
     if (this.targetX > this.x + maxTargetDiff) {
       this.targetX = this.x + maxTargetDiff;
     } else if (this.targetX < this.x - maxTargetDiff) {
