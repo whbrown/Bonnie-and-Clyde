@@ -6,7 +6,7 @@ class Game {
     this.road = new Road();
     this.background = new Background();
     this.bullets = [];
-    this.player = new Player(100, 550, './assets/car3.png');
+    this.player = new Player(100, 550, 'assets/car3.png');
     this.civilian1 = new Civilian(
       720,
       400,
@@ -38,11 +38,11 @@ class Game {
 
   preload() {
     // TODO: move wreck loadimage to vehicles class
-    this.carWreck1 = loadImage('./assets/carwreck1.png');
-    this.carWreck2 = loadImage('./assets/carwreck2.png');
-    this.carWreck3 = loadImage('./assets/carwreck3.png');
-    this.carWreck4 = loadImage('./assets/carwreck4.png');
-    this.bulletImg = loadImage('./assets/bullet-small.png');
+    this.carWreck1 = loadImage('assets/carwreck1.png');
+    this.carWreck2 = loadImage('assets/carwreck2.png');
+    this.carWreck3 = loadImage('assets/carwreck3.png');
+    this.carWreck4 = loadImage('assets/carwreck4.png');
+    this.bulletImg = loadImage('assets/bullet-small.png');
     this.carWreckImgs = [
       this.carWreck1,
       this.carWreck2,
@@ -170,7 +170,7 @@ class Game {
           this.player.aimAngle,
           1,
           30,
-          '/assets/bullet-small.png'
+          'assets/bullet-small.png'
         );
         newBullet.preload();
         this.bullets.push(newBullet);

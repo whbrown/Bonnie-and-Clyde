@@ -4,7 +4,7 @@ const game = new Game();
 
 function preload() {
   console.log('preload');
-  img = loadImage('/assets/bullet.png');
+  img = loadImage('assets/bullet.png');
   game.preload();
 }
 
