@@ -32,7 +32,11 @@ class Bullet {
       game.activeVehicles.find(vehicle => {
         if (isCollision(this, vehicle)) {
           game.bullets.splice(bulletIndex, 1);
-          return (vehicle.health -= this.damage);
+          vehicle.health -= this.damage;
+          if (vehicle.health <= 0 && this.shooterID === 1) {
+            game.player.murderCount += 1;
+          }
+          return vehicle.health;
         }
         return false;
       });

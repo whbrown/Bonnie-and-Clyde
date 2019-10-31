@@ -200,6 +200,8 @@ class Game {
     });
     pop();
     this.sonarEmitters.forEach(emitter => emitter.draw());
+    createHTML();
+    updateMurderCount();
   }
 }
 
