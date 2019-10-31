@@ -134,8 +134,7 @@ class Game {
       // every 3.3 seconds
       this.spawnCivilian();
     }
-    if (frameCount > 1500 && frameCount % 130 === 0) {
-      // every 3.3 seconds
+    if (frameCount > 1500 && frameCount % 180 === 0) {
       this.spawnCivilian();
     }
     if (frameCount % 600 === 0) {
