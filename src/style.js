@@ -6,5 +6,5 @@ function createHTML() {
   document.querySelector('h1').classList.add('murder-count');
 }
 function updateMurderCount() {
-  document.querySelector('.murder-count').innerText = game.player.murderCount;
+  // document.querySelector('.murder-count').innerText = game.player.murderCount;
 }
