@@ -179,7 +179,7 @@ class Game {
         this.bullets.push(newBullet);
       }
     }
-    if (frameCount % 900 === 0) {
+    if (frameCount % 60 === 0) {
       this.activePolice.forEach((police, index) => {
         if (police.health <= 0) {
           this.activePolice.splice(index, 1);
