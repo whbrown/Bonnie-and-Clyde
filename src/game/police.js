@@ -9,9 +9,10 @@ class Police extends Vehicle {
 }
 
 class SonarEmitter {
-  constructor(x, y) {
+  constructor(x, y, emitterLane) {
     this.x = x;
     this.y = y;
+    this.emitterLane = emitterLane;
     this.emitterParticles = [];
   }
 
@@ -22,22 +23,25 @@ class SonarEmitter {
 
   setup() {
     this.test = 'test';
+    this.y += this.sonarImg.height / 2;
     this.width = this.sonarImg.width;
     this.height = this.sonarImg.height;
   }
 
   draw() {
-    if (frameCount % 10 === 0) {
-      let emitterParticle = new Bullet(
-        this.particleImg,
+    if (frameCount % 30 === 0) {
+      let emitterParticle = new SonarParticle(
         this.x,
         this.y,
-        0.0,
-        -1,
-        0
+        this.emitterLane,
+        './src/game/assets/sonar-particle.png'
       );
+      emitterParticle.preload();
       this.emitterParticles.push(emitterParticle);
     }
+    this.emitterParticles.forEach((particle, index) => {
+      particle.draw(index);
+    });
     image(this.sonarImg, this.x, this.y, this.width, this.height);
   }
 }

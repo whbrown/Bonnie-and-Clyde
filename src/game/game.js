@@ -21,6 +21,12 @@ class Game {
     this.objectID = 1;
     this.roadMaxY = 500;
     this.roadMinY = 300;
+    // array of 5 values which map to 5 40px strips of the road from 300 to 500 corresponding with the difference between the police-car's x value and the x value of the nearest vehicle within
+    // 300-340, 340-380, 380-420, 420-460, 460-500;
+    this.sonarLanes = [Infinity, Infinity, Infinity, Infinity, Infinity];
+    // each traffic lane corresponds with a y axis that cars are allowed to spawn on.
+    // this.trafficLanes = [300, 340, 380, 420, 460];
+    this.trafficLanes = [300, 350, 400, 450, 500];
   }
 
   preload() {
@@ -28,10 +34,30 @@ class Game {
     this.carWreck1 = loadImage('./src/game/assets/carwreck1.png');
     this.carWreck2 = loadImage('./src/game/assets/carwreck2.png');
     this.carWreck3 = loadImage('./src/game/assets/carwreck3.png');
-    this.carWreckImgs = [this.carWreck1, this.carWreck2, this.carWreck3];
+    this.carWreck4 = loadImage('./src/game/assets/carwreck4.png');
+    this.bulletImg = loadImage('./src/game/assets/bullet-small.png');
+    this.carWreckImgs = [
+      this.carWreck1,
+      this.carWreck2,
+      this.carWreck3,
+      this.carWreck4,
+    ];
     this.background.preload();
     this.road.preload();
     // this.bullet.preload();
+    this.sonarEmitter1 = new SonarEmitter(0, this.trafficLanes[0], 0);
+    this.sonarEmitter2 = new SonarEmitter(0, this.trafficLanes[1], 1);
+    this.sonarEmitter3 = new SonarEmitter(0, this.trafficLanes[2], 2);
+    this.sonarEmitter4 = new SonarEmitter(0, this.trafficLanes[3], 3);
+    this.sonarEmitter5 = new SonarEmitter(0, this.trafficLanes[4], 4);
+    this.sonarEmitters = [
+      this.sonarEmitter1,
+      this.sonarEmitter2,
+      this.sonarEmitter3,
+      this.sonarEmitter4,
+      this.sonarEmitter5,
+    ];
+    this.sonarEmitters.forEach(emitter => emitter.preload());
     this.player.preload();
     this.civilian1.preload();
     this.civilian2.preload();
@@ -47,6 +73,7 @@ class Game {
       vehicle.objectID = this.objectID;
       this.objectID += 1;
     });
+    this.sonarEmitters.forEach(emitter => emitter.setup());
   }
 
   spawnCivilian() {
@@ -55,9 +82,7 @@ class Game {
     );
     this.newVehicle = new Civilian(
       GAMEWIDTH,
-      Math.floor(
-        Math.random() * (this.roadMaxY - this.roadMinY + 1) + this.roadMinY
-      ),
+      this.trafficLanes[Math.floor(Math.random() * this.trafficLanes.length)],
       civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]].imgPath,
       civilianCarTypes[Object.keys(civilianCarTypes)[randomIndex]]
     );
@@ -107,7 +132,10 @@ class Game {
           this.player.x + this.player.img.width / 2,
           this.player.y + this.player.img.height / 2,
           this.player.aimAngle,
-          1
+          1,
+          30,
+          'bullet',
+          './src/game/assets/bullet-small.png'
         );
         newBullet.preload();
         this.bullets.push(newBullet);
@@ -126,34 +154,12 @@ class Game {
       ) {
         this.bullets.splice(index, 1);
       }
-      bullet.draw();
+      bullet.draw(index);
     });
     pop();
+    this.sonarEmitters.forEach(emitter => emitter.draw());
   }
 }
-
-// function isCollision(subject, targets) {
-//   // look for a way better than O(n**2) to check for collisions.
-//   return targets.some(object => {
-//     if (subject.objectID === object.objectID) {
-//       return false;
-//     }
-//     if (
-//       subject.targetX + subject.img.width < object.x ||
-//       object.x + subject.img.width < subject.targetX
-//     ) {
-//       return false;
-//     }
-//     if (
-//       subject.targetY + (subject.img.height - 30) >
-//         object.y + object.img.height ||
-//       object.y + (subject.img.height - 30) > subject.targetY + object.img.height
-//     ) {
-//       return false;
-//     }
-//     return true;
-//   });
-// }
 
 function isCollision(subject, object) {
   // look for a way better than O(n**2) to check for collisions.

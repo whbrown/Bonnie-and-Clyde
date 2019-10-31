@@ -11,6 +11,14 @@ function cotan(x) {
   return 1 / Math.tan(x);
 }
 
+// emitterIDtoSonarLane = {
+//   '-1': 0,
+//   '-2': 1,
+//   '-3': 2,
+//   '-4': 3,
+//   '-5': 4,
+// };
+
 const civilianCarTypes = {
   SUV: {
     name: 'SUV',
