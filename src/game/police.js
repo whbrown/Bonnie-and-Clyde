@@ -9,11 +9,12 @@ class Police extends Vehicle {
 }
 
 class SonarEmitter {
-  constructor(x, y, emitterLane) {
+  constructor(x, y, emitterLane, debug = false) {
     this.x = x;
     this.y = y;
     this.emitterLane = emitterLane;
     this.emitterParticles = [];
+    this.debug = debug;
   }
 
   preload() {

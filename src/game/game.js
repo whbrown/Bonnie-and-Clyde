@@ -134,7 +134,6 @@ class Game {
           this.player.aimAngle,
           1,
           30,
-          'bullet',
           './src/game/assets/bullet-small.png'
         );
         newBullet.preload();
@@ -158,6 +157,9 @@ class Game {
     });
     pop();
     this.sonarEmitters.forEach(emitter => emitter.draw());
+    if (frameCount % 30 === 0) {
+      console.log(this.sonarLanes);
+    }
   }
 }
 

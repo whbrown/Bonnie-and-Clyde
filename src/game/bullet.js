@@ -48,38 +48,49 @@ class Bullet {
     image(this.img, this.x, this.y, img.width / 3, img.height / 3);
   }
 }
-// TODO: reimplement sonar particles as a subclass of bullet
+
 class SonarParticle extends Bullet {
   constructor(x, y, emitterLane, imgPath) {
     super(x, y, 0, -1, 0, imgPath);
     this.emitterLane = emitterLane;
-    this.speed = 20;
+    this.speed = 10;
   }
 
-  draw() {
+  draw(particleIndex) {
     this.targetX += this.speed * Math.cos(this.angle);
     this.targetY += this.speed * Math.sin(this.angle);
     let collision = false;
-    // if (!collision) {
-    //   game.activeVehicles.find(vehicle => {
-    //     if (isCollision(this, vehicle)) {
-    //       game.sonarEmitters[emitterLane].emitterParticles.splice(
-    //         bulletIndex,
-    //         1
-    //       );
-    //       return (game.sonarLanes[emitterLane] = vehicle.x);
-    //     }
-    //     return false;
-    //   });
-    // }
     if (!collision) {
+      game.activeVehicles.find(vehicle => {
+        if (isCollision(this, vehicle)) {
+          game.sonarEmitters[this.emitterLane].emitterParticles.splice(
+            particleIndex,
+            1
+          );
+          game.sonarLanes[this.emitterLane] = vehicle.x || GAMEWIDTH;
+          return (collision = true);
+        }
+        if (this.x > game.sonarLanes[this.emitterLane]) {
+          // console.log(this.x);
+          game.sonarLanes[this.emitterLane] = this.x;
+        }
+        return false;
+      });
+    }
+    if (!collision) {
+      // game.sonarLanes[this.emitterLane] = GAMEWIDTH;
       this.x = this.targetX;
       this.y = this.targetY;
     }
 
     this.x = this.targetX;
     this.y = this.targetY;
-
+    if (this.x > GAMEWIDTH) {
+      game.sonarEmitters[this.emitterLane].emitterParticles.splice(
+        particleIndex,
+        1
+      );
+    }
     image(this.img, this.x, this.y, img.width, img.height);
   }
 }
