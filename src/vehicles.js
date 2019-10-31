@@ -20,7 +20,7 @@ class Vehicle {
   }
 
   setup() {
-    console.log('run vehicle setup');
+    // console.log('run vehicle setup');
     this.originalX = this.x;
     this.originalY = this.y;
   }

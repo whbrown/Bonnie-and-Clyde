@@ -130,7 +130,11 @@ class Game {
     this.background.draw();
     this.road.draw();
     this.activeVehicles.sort((a, b) => a.y - b.y);
-    if (frameCount > 180 && frameCount % 200 === 0) {
+    if (frameCount > 180 && frameCount < 1500 && frameCount % 200 === 0) {
+      // every 3.3 seconds
+      this.spawnCivilian();
+    }
+    if (frameCount > 1500 && frameCount % 130 === 0) {
       // every 3.3 seconds
       this.spawnCivilian();
     }
@@ -200,8 +204,6 @@ class Game {
     });
     pop();
     this.sonarEmitters.forEach(emitter => emitter.draw());
-    createHTML();
-    updateMurderCount();
   }
 }
 
