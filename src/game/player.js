@@ -10,7 +10,7 @@ class Player extends Vehicle {
     // TODO: increment murderCount whenever player kills civilian/cop
     this.murderCount = 0;
     this.carType = {
-      wreckNum: 1,
+      wreckNum: 3,
     };
   }
 
@@ -122,7 +122,7 @@ class Player extends Vehicle {
       this.x = this.targetX;
       this.y = this.targetY;
     } else {
-      this.health -= 10;
+      this.health -= 7.5;
       this.x -= carSpeed;
     }
     // TODO: simple imitation of newton's 3rd law

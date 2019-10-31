@@ -31,7 +31,7 @@ const civilianCarTypes = {
     imgPath: './src/game/assets/car6.png',
     health: 100,
     drivingStyle: 'standard',
-    wreckNum: 2,
+    wreckNum: 3,
   },
   'Ford Model B': {
     name: 'Ford Model B',
@@ -50,7 +50,7 @@ const civilianCarTypes = {
   Cadillac: {
     name: 'Cadillac',
     imgPath: './src/game/assets/car9.png',
-    health: 120,
+    health: 100,
     drivingStyle: 'aggressive',
     wreckNum: 0,
   },
