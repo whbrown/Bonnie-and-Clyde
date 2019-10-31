@@ -33,7 +33,7 @@ class Game {
     this.sonarLanes = [GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH];
     // each traffic lane corresponds with a y axis that cars are allowed to spawn on.
     // this.trafficLanes = [300, 340, 380, 420, 460];
-    this.trafficLanes = [300, 350, 400, 450, 500];
+    this.trafficLanes = [280, 340, 420, 480, 530];
   }
 
   preload() {
