@@ -62,7 +62,7 @@ class SonarParticle extends Bullet {
     let collision = false;
     if (!collision) {
       game.activeVehicles.find(vehicle => {
-        if (isCollision(this, vehicle)) {
+        if (isCollision(this, vehicle) && !vehicle.isPolice) {
           game.sonarEmitters[this.emitterLane].emitterParticles.splice(
             particleIndex,
             1

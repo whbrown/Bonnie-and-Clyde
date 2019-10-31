@@ -19,6 +19,16 @@ function cotan(x) {
 //   '-5': 4,
 // };
 
+const policeCarTypes = {
+  'Paddy Wagon': {
+    name: 'Paddy Wagon',
+    imgPath: './src/game/assets/policepaddywagon.png',
+    health: 300,
+    drivingStyle: 'righteous',
+    wreckNum: 0, // TODO: replace wreck with police specific wreck
+  },
+};
+
 const civilianCarTypes = {
   SUV: {
     name: 'SUV',

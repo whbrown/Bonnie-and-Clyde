@@ -7,7 +7,7 @@ class Game {
     this.bullets = [];
     this.player = new Player(100, 350, './src/game/assets/car3.png');
     this.civilian1 = new Civilian(
-      100,
+      720,
       400,
       civilianCarTypes['SUV'].imgPath,
       civilianCarTypes['SUV']
@@ -17,6 +17,12 @@ class Game {
       450,
       civilianCarTypes['Buick'].imgPath,
       civilianCarTypes['Buick']
+    );
+    this.police = new Police(
+      1,
+      600,
+      policeCarTypes['Paddy Wagon'].imgPath,
+      policeCarTypes['Paddy Wagon']
     );
     this.objectID = 1;
     this.roadMaxY = 500;
@@ -61,14 +67,21 @@ class Game {
     this.player.preload();
     this.civilian1.preload();
     this.civilian2.preload();
+    this.police.preload();
   }
 
   setup() {
     this.player.setup();
     this.civilian1.setup();
     this.civilian2.setup();
-    this.activeVehicles = [this.player, this.civilian1, this.civilian2];
-    this.activeCivilians = [this.civilian1, this.civilian2];
+    this.police.setup();
+    this.activeVehicles = [
+      this.player,
+      this.civilian1,
+      this.civilian2,
+      this.police,
+    ];
+    this.activeCivilians = [this.player, this.civilian1, this.civilian2];
     this.activeVehicles.forEach(vehicle => {
       vehicle.objectID = this.objectID;
       this.objectID += 1;
@@ -102,14 +115,14 @@ class Game {
     this.background.draw();
     this.road.draw();
     this.activeVehicles.sort((a, b) => a.y - b.y);
-    if (frameCount > 180 && frameCount < 1200 && frameCount % 200 === 0) {
+    if (frameCount > 180 && frameCount % 200 === 0) {
       // every 3.3 seconds
       this.spawnCivilian();
     }
-    if (frameCount > 1200 && frameCount % 120 === 0) {
-      // every 2 seconds
-      this.spawnCivilian();
-    }
+    // if (frameCount > 1200 && frameCount % 120 === 0) {
+    //   // every 2 seconds
+    //   this.spawnCivilian();
+    // }
     this.activeVehicles.forEach((subjectVehicle, subjectIndex) => {
       // remove vehicles located off left side of the canvas
       if (

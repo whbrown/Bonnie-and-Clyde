@@ -25,10 +25,11 @@ class Vehicle {
     this.originalY = this.y;
   }
 
-  draw() {
+  draw(bonusSpeed = 0) {
     // TODO: make this min/max predicated of the type of vehicle
     let min = -3;
     let max = -0.5;
+    this.targetX += bonusSpeed;
     if (!this.wrecked) {
       this.targetX += Math.floor(Math.random() * (max - min + 1) + min);
     }

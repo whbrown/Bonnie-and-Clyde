@@ -3,6 +3,36 @@ class Police extends Vehicle {
     super(x, y, carStylePath, carType);
     this.carType = carType;
     this.health = carType.health;
+    this.currentLaneIndex = 0;
+    this.isPolice = true;
+    this.bonusSpeed = 1.7;
+  }
+
+  draw() {
+    let longestLane = -Infinity;
+    let longestAdjacent = -Infinity;
+    game.sonarLanes.forEach((lane, laneIndex) => {
+      if (lane > longestLane && lane > game.sonarLanes[this.currentLaneIndex]) {
+        longestLane = lane;
+        this.currentLaneIndex = laneIndex;
+      }
+      // if (
+      //   (lane > game.sonarLanes[this.currentLaneIndex] &&
+      //     laneIndex <= this.currentLaneIndex + 1) ||
+      //   laneIndex >= this.currentLaneIndex - 1
+      // ) {
+      //   this.currentLaneIndex = laneIndex;
+      // }
+    });
+    if (this.targetX < 50) {
+      this.bonusSpeed = 2;
+    } else {
+      this.bonusSpeed = 1.6;
+    }
+    if (frameCount % 20 === 0 && frameCount > 60) {
+      this.targetY = game.trafficLanes[this.currentLaneIndex];
+    }
+    super.draw(this.bonusSpeed);
   }
 
   maneuver() {}
