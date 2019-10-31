@@ -6,24 +6,53 @@ class Police extends Vehicle {
     this.currentLaneIndex = 0;
     this.isPolice = true;
     this.bonusSpeed = 1.7;
+    this.objectID = -1;
+  }
+
+  updateAim() {
+    this.aimAngle = atan2(game.player.y - this.y, game.player.x - this.x);
+
+    // convert from radians to degrees
+    // this.aimAngle =
+    //   ((this.aimAngle >= 0 ? this.aimAngle : 2 * Math.PI + this.aimAngle) *
+    //     360) /
+    //   (2 * Math.PI);
   }
 
   draw() {
-    let longestLane = -Infinity;
-    let longestAdjacent = -Infinity;
+    if (frameCount % 20 === 0) {
+      this.updateAim();
+      let newBullet = new Bullet(
+        this.x + this.img.width / 2,
+        this.y + this.img.height / 2,
+        this.aimAngle * Math.random() - 0.5 / 1000,
+        -1,
+        5,
+        './src/game/assets/bullet-small.png'
+      );
+      newBullet.preload();
+      game.bullets.push(newBullet);
+    }
+    // let longestLane = -Infinity;
+    // let longestAdjacent = -Infinity;
     game.sonarLanes.forEach((lane, laneIndex) => {
-      if (lane > longestLane && lane > game.sonarLanes[this.currentLaneIndex]) {
-        longestLane = lane;
+      // if (lane > longestLane && lane > game.sonarLanes[this.currentLaneIndex]) {
+      //   longestLane = lane;
+      //   // this.currentLaneIndex = laneIndex;
+      // }
+
+      // current lane: 2--- lane index 4
+      if (
+        lane > game.sonarLanes[this.currentLaneIndex] &&
+        frameCount % 20 === 0 &&
+        (laneIndex === this.currentLaneIndex + 1 ||
+          laneIndex === this.currentLaneIndex - 1)
+      ) {
         this.currentLaneIndex = laneIndex;
       }
-      // if (
-      //   (lane > game.sonarLanes[this.currentLaneIndex] &&
-      //     laneIndex <= this.currentLaneIndex + 1) ||
-      //   laneIndex >= this.currentLaneIndex - 1
-      // ) {
-      //   this.currentLaneIndex = laneIndex;
-      // }
     });
+
+    // console.log(this.currentLaneIndex);
     if (this.targetX < 50) {
       this.bonusSpeed = 2;
     } else {

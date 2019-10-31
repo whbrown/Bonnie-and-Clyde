@@ -5,7 +5,7 @@ class Game {
     this.road = new Road();
     this.background = new Background();
     this.bullets = [];
-    this.player = new Player(100, 350, './src/game/assets/car3.png');
+    this.player = new Player(100, 550, './src/game/assets/car3.png');
     this.civilian1 = new Civilian(
       720,
       400,
@@ -13,14 +13,14 @@ class Game {
       civilianCarTypes['SUV']
     );
     this.civilian2 = new Civilian(
-      680,
+      300,
       450,
       civilianCarTypes['Buick'].imgPath,
       civilianCarTypes['Buick']
     );
     this.police = new Police(
       1,
-      600,
+      300,
       policeCarTypes['Paddy Wagon'].imgPath,
       policeCarTypes['Paddy Wagon']
     );
@@ -29,7 +29,7 @@ class Game {
     this.roadMinY = 300;
     // array of 5 values which map to 5 40px strips of the road from 300 to 500 corresponding with the difference between the police-car's x value and the x value of the nearest vehicle within
     // 300-340, 340-380, 380-420, 420-460, 460-500;
-    this.sonarLanes = [Infinity, Infinity, Infinity, Infinity, Infinity];
+    this.sonarLanes = [GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH];
     // each traffic lane corresponds with a y axis that cars are allowed to spawn on.
     // this.trafficLanes = [300, 340, 380, 420, 460];
     this.trafficLanes = [300, 350, 400, 450, 500];
@@ -82,6 +82,7 @@ class Game {
       this.police,
     ];
     this.activeCivilians = [this.player, this.civilian1, this.civilian2];
+    this.activePolice = [this.police];
     this.activeVehicles.forEach(vehicle => {
       vehicle.objectID = this.objectID;
       this.objectID += 1;
@@ -110,6 +111,19 @@ class Game {
     this.objectID += 1;
   }
 
+  spawnPolice() {
+    this.police = new Police(
+      -200,
+      300,
+      policeCarTypes['Paddy Wagon'].imgPath,
+      policeCarTypes['Paddy Wagon']
+    );
+    this.police.preload();
+    this.police.setup();
+    this.activeVehicles.push(this.police);
+    this.activePolice.push(this.police);
+  }
+
   draw() {
     clear();
     this.background.draw();
@@ -118,6 +132,9 @@ class Game {
     if (frameCount > 180 && frameCount % 200 === 0) {
       // every 3.3 seconds
       this.spawnCivilian();
+      if (!this.activePolice.length) {
+        this.spawnPolice();
+      }
     }
     // if (frameCount > 1200 && frameCount % 120 === 0) {
     //   // every 2 seconds
@@ -126,13 +143,16 @@ class Game {
     this.activeVehicles.forEach((subjectVehicle, subjectIndex) => {
       // remove vehicles located off left side of the canvas
       if (
-        subjectVehicle.x + subjectVehicle.img.width < 0 &&
+        subjectVehicle.x + subjectVehicle.img.width < -250 &&
         subjectVehicle.objectID !== 1
       ) {
         this.activeVehicles.splice(subjectIndex, 1);
         this.activeCivilians.splice(subjectIndex, 1);
       }
       if (subjectVehicle.health <= 0) {
+        if (subjectVehicle.isPolice) {
+          this.activePolice.splice(subjectIndex, 1);
+        }
         subjectVehicle.img = this.carWreckImgs[subjectVehicle.carType.wreckNum];
         subjectVehicle.wrecked = true;
       }
