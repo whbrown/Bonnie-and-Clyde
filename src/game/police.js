@@ -27,7 +27,7 @@ class Police extends Vehicle {
         this.y + this.img.height / 2,
         this.aimAngle * Math.random() - 0.5 / 1000,
         -1,
-        5,
+        30,
         './src/game/assets/bullet-small.png'
       );
       newBullet.preload();
@@ -77,7 +77,7 @@ class SonarEmitter {
   }
 
   preload() {
-    this.sonarImg = loadImage('./src/game/assets/sonar-emitter.png');
+    this.sonarImg = loadImage('./src/game/assets/invisible-sonar-emitter.png');
     this.particleImg = loadImage(`./src/game/assets/bullet-small.png`);
   }
 

@@ -1,5 +1,6 @@
 /* eslint no-undef: 0, no-unused-vars: 0, dot-notation: 0 */
 
+// TODO: aim accuracy meter, kill count, timer
 class Game {
   constructor() {
     this.road = new Road();
