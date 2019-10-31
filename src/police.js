@@ -20,7 +20,7 @@ class Police extends Vehicle {
   }
 
   draw() {
-    if (frameCount % 20 === 0) {
+    if (frameCount % 20 === 0 && game.player.health > 0) {
       this.updateAim();
       let newBullet = new Bullet(
         this.x + this.img.width / 2,
@@ -54,7 +54,7 @@ class Police extends Vehicle {
 
     // console.log(this.currentLaneIndex);
     if (this.targetX < 50) {
-      this.bonusSpeed = 2;
+      this.bonusSpeed = 2.2;
     } else {
       this.bonusSpeed = 1.6;
     }
@@ -77,8 +77,8 @@ class SonarEmitter {
   }
 
   preload() {
-    this.sonarImg = loadImage('./assets/invisible-sonar-emitter.png');
-    this.particleImg = loadImage(`./assets/bullet-small.png`);
+    this.sonarImg = loadImage('/assets/invisible-sonar-emitter.png');
+    this.particleImg = loadImage(`/assets/bullet-small.png`);
   }
 
   setup() {
@@ -89,12 +89,12 @@ class SonarEmitter {
   }
 
   draw() {
-    if (frameCount % 30 === 0) {
+    if (frameCount % 30 === 0 && game.activePolice.length) {
       let emitterParticle = new SonarParticle(
         this.x,
         this.y,
         this.emitterLane,
-        './assets/sonar-particle.png'
+        '/assets/sonar-particle.png'
       );
       emitterParticle.preload();
       this.emitterParticles.push(emitterParticle);

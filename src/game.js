@@ -133,6 +133,8 @@ class Game {
     if (frameCount > 180 && frameCount % 200 === 0) {
       // every 3.3 seconds
       this.spawnCivilian();
+    }
+    if (frameCount % 600 === 0) {
       if (!this.activePolice.length) {
         this.spawnPolice();
       }
@@ -168,11 +170,18 @@ class Game {
           this.player.aimAngle,
           1,
           30,
-          './assets/bullet-small.png'
+          '/assets/bullet-small.png'
         );
         newBullet.preload();
         this.bullets.push(newBullet);
       }
+    }
+    if (frameCount % 900 === 0) {
+      this.activePolice.forEach((police, index) => {
+        if (police.health <= 0) {
+          this.activePolice.splice(index, 1);
+        }
+      });
     }
 
     push();

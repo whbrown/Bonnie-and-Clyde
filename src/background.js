@@ -36,7 +36,7 @@ class Background {
 
   preload() {
     console.log('background preloading');
-    this.background = loadImage('./assets/panoramic-background.png');
+    this.background = loadImage('/assets/panoramic-background.png');
     this.backgroundWidth = 2770;
   }
 
