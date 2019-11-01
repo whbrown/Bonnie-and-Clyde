@@ -58,6 +58,8 @@ class SonarParticle extends Bullet {
     super(x, y, 0, -1, 0, imgPath);
     this.emitterLane = emitterLane;
     this.speed = 10;
+    this.width = 20;
+    this.height = 20;
   }
 
   draw(particleIndex) {
@@ -95,6 +97,6 @@ class SonarParticle extends Bullet {
         1
       );
     }
-    image(this.img, this.x, this.y, img.width, img.height);
+    image(this.img, this.x, this.y, this.width, this.height);
   }
 }

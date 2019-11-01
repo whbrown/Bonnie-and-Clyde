@@ -6,16 +6,16 @@ class Game {
     this.road = new Road();
     this.background = new Background();
     this.bullets = [];
-    this.player = new Player(100, 550, './assets/car3.png');
+    this.player = new Player(100, 530, './assets/car3.png');
     this.civilian1 = new Civilian(
       720,
-      400,
+      360,
       civilianCarTypes['SUV'].imgPath,
       civilianCarTypes['SUV']
     );
     this.civilian2 = new Civilian(
       300,
-      450,
+      440,
       civilianCarTypes['Buick'].imgPath,
       civilianCarTypes['Buick']
     );
@@ -30,10 +30,10 @@ class Game {
     this.roadMinY = 300;
     // array of 5 values which map to 5 40px strips of the road from 300 to 500 corresponding with the difference between the police-car's x value and the x value of the nearest vehicle within
     // 300-340, 340-380, 380-420, 420-460, 460-500;
-    this.sonarLanes = [GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH];
+    this.sonarLanes = [GAMEWIDTH, GAMEWIDTH, GAMEWIDTH, GAMEWIDTH];
     // each traffic lane corresponds with a y axis that cars are allowed to spawn on.
     // this.trafficLanes = [300, 340, 380, 420, 460];
-    this.trafficLanes = [300, 350, 400, 450, 500];
+    this.trafficLanes = [270, 350, 440, 520];
   }
 
   preload() {
@@ -56,13 +56,11 @@ class Game {
     this.sonarEmitter2 = new SonarEmitter(0, this.trafficLanes[1], 1);
     this.sonarEmitter3 = new SonarEmitter(0, this.trafficLanes[2], 2);
     this.sonarEmitter4 = new SonarEmitter(0, this.trafficLanes[3], 3);
-    this.sonarEmitter5 = new SonarEmitter(0, this.trafficLanes[4], 4);
     this.sonarEmitters = [
       this.sonarEmitter1,
       this.sonarEmitter2,
       this.sonarEmitter3,
       this.sonarEmitter4,
-      this.sonarEmitter5,
     ];
     this.sonarEmitters.forEach(emitter => emitter.preload());
     this.player.preload();
@@ -134,9 +132,12 @@ class Game {
       // every 3.3 seconds
       this.spawnCivilian();
     }
-    if (frameCount > 1500 && frameCount % 130 === 0) {
+    if (frameCount > 1500 && frameCount % 170 === 0) {
       // every 3.3 seconds
       this.spawnCivilian();
+    }
+    if (frameCount % 120 === 0) {
+      console.log(`Sonar lanes from top to bottom:`, this.sonarLanes);
     }
     if (frameCount % 600 === 0) {
       if (!this.activePolice.length) {
@@ -180,7 +181,7 @@ class Game {
         this.bullets.push(newBullet);
       }
     }
-    if (frameCount % 900 === 0) {
+    if (frameCount % 60 === 0) {
       this.activePolice.forEach((police, index) => {
         if (police.health <= 0) {
           this.activePolice.splice(index, 1);

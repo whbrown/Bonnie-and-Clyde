@@ -8,7 +8,7 @@ class Road {
   }
 
   preload() {
-    console.log('road preloading');
+    // console.log('road preloading');
     this.road = loadImage('./assets/road.png');
     this.roadWidth = 2880;
   }
@@ -35,7 +35,7 @@ class Background {
   }
 
   preload() {
-    console.log('background preloading');
+    // console.log('background preloading');
     this.background = loadImage('./assets/panoramic-background.png');
     this.backgroundWidth = 2770;
   }

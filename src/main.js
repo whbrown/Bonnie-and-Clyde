@@ -3,13 +3,13 @@
 const game = new Game();
 
 function preload() {
-  console.log('preload');
+  // console.log('preload');
   img = loadImage('./assets/bullet.png');
   game.preload();
 }
 
 function setup() {
-  console.log('setup');
+  // console.log('setup');
   createCanvas(GAMEWIDTH, GAMEHEIGHT);
   game.setup();
 }

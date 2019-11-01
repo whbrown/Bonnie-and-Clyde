@@ -40,6 +40,13 @@ class Police extends Vehicle {
       //   longestLane = lane;
       //   // this.currentLaneIndex = laneIndex;
       // }
+      // if (
+      //   game.sonarLanes[this.currentLaneIndex] < 20 &&
+      //   (laneIndex === this.currentLaneIndex + 1 ||
+      //     laneIndex === this.currentLaneIndex - 1)
+      // ) {
+      //   this.currentLaneIndex = laneIndex;
+      // }
 
       // current lane: 2--- lane index 4
       if (
@@ -58,13 +65,11 @@ class Police extends Vehicle {
     } else {
       this.bonusSpeed = 1.6;
     }
-    if (frameCount % 20 === 0 && frameCount > 60) {
+    if (frameCount % 30 === 0 && frameCount > 60) {
       this.targetY = game.trafficLanes[this.currentLaneIndex];
     }
     super.draw(this.bonusSpeed);
   }
-
-  maneuver() {}
 }
 
 class SonarEmitter {
@@ -78,7 +83,7 @@ class SonarEmitter {
 
   preload() {
     this.sonarImg = loadImage('./assets/invisible-sonar-emitter.png');
-    this.particleImg = loadImage(`./assets/bullet-small.png`);
+    this.particleImg = loadImage(`./assets/sonar-particle.png`);
   }
 
   setup() {
